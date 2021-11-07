@@ -1,0 +1,36 @@
+{
+    "name": "laratips/sortable",
+    "description": "Package for handling column sorting in Laravel",
+    "keywords": [
+        "sortable",
+        "sorting",
+        "column",
+        "sort",
+        "laravel"
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Arman Poghosyan",
+            "email": "armpogart@gmail.com",
+            "role": "Developer and maintainer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/database": "^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Laratips\\Sortable\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": []
+        }
+    }
+}
