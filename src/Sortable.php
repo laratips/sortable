@@ -6,6 +6,7 @@ namespace Laratips\Sortable;
 
 use Closure;
 use Exception;
+use Illuminate\Container\Container;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,8 +14,11 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+
+use Psr\Container\ContainerExceptionInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 use function array_filter;
 use function array_key_exists;
@@ -34,11 +38,15 @@ use function substr;
 trait Sortable
 {
     /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      * @throws Exception
      */
     public function scopeSortable(Builder $query, ?array $defaultSortParameters = null): Builder
     {
-        $params = Request::only([$this->getSortQueryParameterName(), $this->getDirectionQueryParameterName()]);
+        /** @var Request $request */
+        $request = Container::getInstance()->get(Request::class);
+        $params = $request->only([$this->getSortQueryParameterName(), $this->getDirectionQueryParameterName()]);
 
         // TODO: map query parameter names to 'sort' and 'direction' which are used in code
         if ($params !== null && count($params) > 0 && isset($params['sort'])) {
@@ -46,7 +54,7 @@ trait Sortable
         }
 
         if ($defaultSortParameters !== null && array_key_exists('sort', $defaultSortParameters)) {
-            Request::merge($defaultSortParameters);
+            $request->merge($defaultSortParameters);
             return $this->queryOrderBuilder($query, $defaultSortParameters);
         }
 
