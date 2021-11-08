@@ -34,7 +34,9 @@
     },
     "extra": {
         "laravel": {
-            "providers": []
+            "providers": [
+                "Laratips\\Sortable\\SortableServiceProvider"
+            ]
         }
     }
 }
